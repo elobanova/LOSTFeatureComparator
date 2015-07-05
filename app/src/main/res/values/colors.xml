@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="feature_name">#ffc96aff</color>
+    <color name="feature_value">#ffc5c5c5</color>
+    <color name="feature_value_text">#ff737373</color>
+    <color name="white">#fff4f4f4</color>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:id="@+id/feature_name"
+        android:background="@color/feature_name"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        android:alpha="30" />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:id="@+id/feature_value"
+        android:background="@color/feature_value"
+        android:textColor="@color/feature_value_text"
+        android:textSize="24dp"/>
+</LinearLayout>
