@@ -5,6 +5,7 @@ import android.widget.BaseAdapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -33,6 +34,11 @@ public abstract class AbstractListAdapter<T extends Serializable> extends BaseAd
      */
     public void clear() {
         items.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addAll(Collection<T> itemsToAdd) {
+        items.addAll(itemsToAdd);
         notifyDataSetChanged();
     }
 

@@ -9,11 +9,6 @@ public class Feature implements Serializable {
     private String name;
     private double value;
 
-//    public Feature(String name, double value) {
-//        this.name = name;
-//        this.value = value;
-//    }
-
     public String getName() {
         return name;
     }
@@ -24,6 +19,10 @@ public class Feature implements Serializable {
 
     public double getValue() {
         return value;
+    }
+
+    public double getValueWithoutNaN() {
+        return Double.isNaN(value) ? 0.0 : value;
     }
 
     public void setValue(double value) {

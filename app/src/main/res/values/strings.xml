@@ -5,4 +5,5 @@
     <string name="action_settings">Settings</string>
     <string name="find_similarity_by_picture_label">Find Similar Picture</string>
     <string name="find_similarity_by_vector_label">Find Similar Vector</string>
+    <string name="export_as_json_menu_label">Export as JSON</string>
 </resources>

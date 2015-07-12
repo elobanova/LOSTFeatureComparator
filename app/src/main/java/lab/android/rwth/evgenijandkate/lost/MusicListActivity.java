@@ -4,20 +4,28 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import lab.android.rwth.evgenijandkate.lost.adapters.MusicFilesListAdapter;
+import lab.android.rwth.evgenijandkate.lost.json.JSONHandler;
 import lab.android.rwth.evgenijandkate.lost.model.AudioFileListItem;
 
 
 public class MusicListActivity extends ListActivity {
     public static final String MUSIC_FILE_ITEM = "item";
+    private static final int MENU_EXPORT_AS_JSON = Menu.FIRST;
     private MusicFilesListAdapter adapter;
 
     @Override
@@ -50,35 +58,52 @@ public class MusicListActivity extends ListActivity {
 
     private void addMusicItemsToAdapter() {
         if (this.adapter != null) {
-            String path = Environment.getExternalStorageDirectory().toString() + "/Music";
-            File musicDirectory = new File(path);
-            if (musicDirectory.isDirectory()) {
-                for (File musicFile : musicDirectory.listFiles()) {
-                    this.adapter.add(new AudioFileListItem(musicFile.getName()));
-                }
+            this.adapter.addAll(getAudioFileItems());
+        }
+    }
+
+    public static List<AudioFileListItem> getAudioFileItems() {
+        List<AudioFileListItem> result = new ArrayList<>();
+        String path = Environment.getExternalStorageDirectory().toString() + "/Music";
+        File musicDirectory = new File(path);
+        if (musicDirectory.isDirectory()) {
+            for (File musicFile : musicDirectory.listFiles()) {
+                result.add(new AudioFileListItem(musicFile.getName()));
             }
         }
+
+        return result;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_music_list, menu);
+        super.onCreateOptionsMenu(menu);
+
+        menu.add(Menu.NONE, MENU_EXPORT_AS_JSON, Menu.NONE, R.string.export_as_json_menu_label);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case MENU_EXPORT_AS_JSON:
+                performExport();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    private void performExport() {
+        List<AudioFileListItem> audioFilesItems = getAudioFileItems();
+        if (audioFilesItems != null) {
+            JSONHandler handler = new JSONHandler(audioFilesItems.get(0));
+            try {
+                JSONObject allFilesJSON = handler.generateJSON(audioFilesItems);
+                Log.i("json", allFilesJSON.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
