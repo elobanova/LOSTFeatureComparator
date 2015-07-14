@@ -4,7 +4,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 
 import lab.android.rwth.evgenijandkate.lost.model.AudioFileListItem;
 import lab.android.rwth.evgenijandkate.lost.xml.XMLHandler;
@@ -37,7 +40,8 @@ public class JSONHandler {
     }
 
     private JSONObject prepareHeader() throws JSONException {
-        JSONObject header = new JSONObject();
+        JSONObject header = new JSONObject() {
+        };
         header.put(RELATION_PROPERTY, AUDIO_RELATION_NAME);
         JSONArray featureNamesJSONArray = new JSONArray();
         JSONObject fileNameAttribute = new JSONObject();
@@ -74,7 +78,11 @@ public class JSONHandler {
         JSONArray valuesJSONArray = new JSONArray();
         valuesJSONArray.put(audioFileListItem.getFileName());
         for (Feature feature : XMLHandler.extractFeatures(audioFileListItem)) {
-            valuesJSONArray.put(feature.getValueWithoutNaN());
+            double featureValue = feature.getValueWithoutNaN();
+            DecimalFormat df = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+            df.setMaximumFractionDigits(340);
+
+            valuesJSONArray.put(df.format(featureValue));
         }
         JSONFeatureData.put(VALUES_PROPERTY, valuesJSONArray);
         return JSONFeatureData;

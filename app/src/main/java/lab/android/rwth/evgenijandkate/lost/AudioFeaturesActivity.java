@@ -89,7 +89,9 @@ public class AudioFeaturesActivity extends FragmentActivity {
                 List<AudioFileListItem> listItems = new ArrayList<>();
                 listItems.add(this.audioFileItem);
                 JSONObject oneFileJSONObject = handler.generateJSON(listItems);
-                Log.i("json", oneFileJSONObject.toString());
+                String jsonToString = oneFileJSONObject.toString();
+                String jsonWithWeightPrecise = jsonToString.replaceAll("\"weight\":1", "\"weight\":1.0");
+                Log.i("json", jsonWithWeightPrecise);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
